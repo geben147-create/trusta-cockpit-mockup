@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="ko" class="">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TRUSTA Cockpit — 3 Mockups Hub</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+tailwind.config = { darkMode: 'class' }
+</script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+<link href="https://fonts.googleapis.com/icon?family=Material+Symbols+Outlined" rel="stylesheet">
+<style>
+  body { font-family: 'Pretendard', 'Inter', system-ui, sans-serif; }
+  .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'opsz' 24; }
+  .card-hover { transition: transform 150ms ease-out, box-shadow 150ms ease-out; }
+  .card-hover:hover { transform: translateY(-2px); }
+</style>
+</head>
+<body class="bg-white dark:bg-[#0F1115] text-slate-900 dark:text-slate-100 transition-colors min-h-screen">
+
+<!-- Header -->
+<header class="border-b border-slate-200 dark:border-slate-800 bg-white/80 dark:bg-[#171A21]/80 backdrop-blur sticky top-0 z-50">
+  <div class="max-w-6xl mx-auto h-16 flex items-center justify-between px-6">
+    <div class="flex items-center gap-3">
+      <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center text-white font-bold text-lg">T</div>
+      <div>
+        <div class="font-bold text-base leading-tight">TRUSTA Cockpit</div>
+        <div class="text-xs text-slate-500">사업 에이전트 OS · 3 Mockups · 2026-05-27</div>
+      </div>
+    </div>
+    <button onclick="toggleDark()" class="w-10 h-10 rounded-lg border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors flex items-center justify-center" title="다크/라이트 토글 (D)">
+      <span class="material-symbols-outlined text-lg" id="theme-icon">dark_mode</span>
+    </button>
+  </div>
+</header>
+
+<!-- Main -->
+<main class="max-w-6xl mx-auto px-6 py-12">
+
+  <!-- Hero -->
+  <section class="mb-12 text-center">
+    <h1 class="text-4xl font-bold mb-3">3가지 변형 — 직접 비교</h1>
+    <p class="text-slate-500 dark:text-slate-400 max-w-2xl mx-auto">
+      같은 데이터 · 같은 사업 흐름. 화면 구조만 달라요. 우상단 토글로 다크/라이트 양쪽 미리 확인하세요.
+    </p>
+  </section>
+
+  <!-- 3 cards -->
+  <section class="grid md:grid-cols-3 gap-6 mb-16">
+
+    <!-- V1 Calendar -->
+    <a href="v1-calendar.html" class="card-hover block rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-[#171A21] overflow-hidden shadow-sm hover:shadow-lg">
+      <div class="aspect-video bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-slate-800 dark:to-indigo-950 p-4 flex items-center justify-center">
+        <div class="w-full">
+          <div class="grid grid-cols-7 gap-1">
+            <div class="aspect-square bg-white dark:bg-slate-900 rounded text-xs text-center pt-1 text-slate-400">월</div>
+            <div class="aspect-square bg-white dark:bg-slate-900 rounded text-xs text-center pt-1 text-slate-400">화</div>
+            <div class="aspect-square bg-white dark:bg-slate-900 rounded text-xs text-center pt-1 text-slate-400">수</div>
+            <div class="aspect-square bg-white dark:bg-slate-900 rounded text-xs text-center pt-1 text-slate-400">목</div>
+            <div class="aspect-square bg-white dark:bg-slate-900 rounded text-xs text-center pt-1 text-slate-400">금</div>
+            <div class="aspect-square bg-white dark:bg-slate-900 rounded text-xs text-center pt-1 text-slate-400">토</div>
+            <div class="aspect-square bg-white dark:bg-slate-900 rounded text-xs text-center pt-1 text-slate-400">일</div>
+            <div class="aspect-square bg-white dark:bg-slate-900 rounded text-xs flex flex-col items-center justify-center"><span class="text-slate-500">1</span><span class="w-1 h-1 rounded-full bg-blue-500"></span></div>
+            <div class="aspect-square bg-white dark:bg-slate-900 rounded text-xs flex items-center justify-center text-slate-300">2</div>
+            <div class="aspect-square bg-white dark:bg-slate-900 rounded text-xs flex flex-col items-center justify-center"><span class="text-slate-500">3</span><span class="w-1 h-1 rounded-full bg-pink-500"></span></div>
+            <div class="aspect-square bg-white dark:bg-slate-900 rounded text-xs flex items-center justify-center text-slate-300">4</div>
+            <div class="aspect-square bg-white dark:bg-slate-900 rounded text-xs flex flex-col items-center justify-center"><span class="text-slate-500">5</span><span class="w-1 h-1 rounded-full bg-slate-700 dark:bg-white"></span></div>
+            <div class="aspect-square bg-blue-500 dark:bg-indigo-500 text-white rounded text-xs flex items-center justify-center font-bold">27</div>
+            <div class="aspect-square bg-white dark:bg-slate-900 rounded text-xs flex items-center justify-center text-slate-300">28</div>
+          </div>
+        </div>
+      </div>
+      <div class="p-5">
+        <div class="flex items-center gap-2 mb-2">
+          <span class="text-xs font-bold px-2 py-0.5 bg-blue-100 dark:bg-blue-900/40 text-blue-700 dark:text-blue-300 rounded-full">V1</span>
+          <h3 class="font-bold text-lg">캘린더 중심</h3>
+        </div>
+        <p class="text-sm text-slate-500 dark:text-slate-400 leading-relaxed mb-3">
+          한 달 그리드가 70% 차지. 셀에 SNS 도트 + 클릭 시 우측 슬라이드 패널.
+        </p>
+        <p class="text-xs text-slate-400">월간 발행 페이스 / 빈 날짜 / 위험 셀 한눈에</p>
+      </div>
+    </a>
+
+    <!-- V2 Cockpit -->
+    <a href="v2-cockpit.html" class="card-hover block rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-[#171A21] overflow-hidden shadow-sm hover:shadow-lg">
+      <div class="aspect-video bg-gradient-to-br from-slate-50 to-slate-200 dark:from-slate-800 dark:to-slate-900 p-4">
+        <div class="h-full flex gap-2">
+          <div class="w-1/5 bg-white dark:bg-slate-900 rounded p-2 space-y-1">
+            <div class="h-2 bg-slate-200 dark:bg-slate-700 rounded"></div>
+            <div class="h-2 bg-blue-200 dark:bg-blue-700 rounded"></div>
+            <div class="h-2 bg-slate-200 dark:bg-slate-700 rounded"></div>
+            <div class="h-2 bg-slate-200 dark:bg-slate-700 rounded"></div>
+          </div>
+          <div class="flex-1 bg-white dark:bg-slate-900 rounded p-2 space-y-1">
+            <div class="h-3 bg-blue-100 dark:bg-blue-900/40 rounded"></div>
+            <div class="grid grid-cols-4 gap-1 mt-1">
+              <div class="h-4 bg-slate-100 dark:bg-slate-800 rounded"></div>
+              <div class="h-4 bg-slate-100 dark:bg-slate-800 rounded"></div>
+              <div class="h-4 bg-slate-100 dark:bg-slate-800 rounded"></div>
+              <div class="h-4 bg-slate-100 dark:bg-slate-800 rounded"></div>
+            </div>
+            <div class="grid grid-cols-7 gap-0.5 mt-2">
+              <div class="aspect-square bg-slate-50 dark:bg-slate-800 rounded-sm"></div>
+              <div class="aspect-square bg-slate-50 dark:bg-slate-800 rounded-sm"></div>
+              <div class="aspect-square bg-slate-50 dark:bg-slate-800 rounded-sm"></div>
+              <div class="aspect-square bg-blue-100 dark:bg-blue-900 rounded-sm"></div>
+              <div class="aspect-square bg-slate-50 dark:bg-slate-800 rounded-sm"></div>
+              <div class="aspect-square bg-slate-50 dark:bg-slate-800 rounded-sm"></div>
+              <div class="aspect-square bg-slate-50 dark:bg-slate-800 rounded-sm"></div>
+            </div>
+          </div>
+          <div class="w-1/4 bg-white dark:bg-slate-900 rounded p-2 space-y-1">
+            <div class="h-2 bg-amber-200 dark:bg-amber-700 rounded"></div>
+            <div class="h-2 bg-slate-200 dark:bg-slate-700 rounded"></div>
+            <div class="h-2 bg-emerald-200 dark:bg-emerald-700 rounded"></div>
+          </div>
+        </div>
+      </div>
+      <div class="p-5">
+        <div class="flex items-center gap-2 mb-2">
+          <span class="text-xs font-bold px-2 py-0.5 bg-indigo-100 dark:bg-indigo-900/40 text-indigo-700 dark:text-indigo-300 rounded-full">V2</span>
+          <h3 class="font-bold text-lg">코크핏 3단</h3>
+        </div>
+        <p class="text-sm text-slate-500 dark:text-slate-400 leading-relaxed mb-3">
+          좌측 에이전트/스킬/훅, 중앙 5탭(캘린더/워크플로/큐/리포트/레퍼런스), 우측 승인/백업/타임라인.
+        </p>
+        <p class="text-xs text-slate-400">하루 종일 켜두고 운영하는 메인 화면</p>
+      </div>
+    </a>
+
+    <!-- V7 Mobile -->
+    <a href="v3-mobile.html" class="card-hover block rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-[#171A21] overflow-hidden shadow-sm hover:shadow-lg">
+      <div class="aspect-video bg-gradient-to-br from-pink-50 to-rose-100 dark:from-slate-800 dark:to-rose-950 p-4 flex items-center justify-center">
+        <div class="w-32 h-full bg-white dark:bg-slate-900 rounded-xl shadow-lg p-2 space-y-1.5">
+          <div class="h-3 bg-blue-500 rounded"></div>
+          <div class="h-6 bg-blue-50 dark:bg-blue-950 rounded p-1">
+            <div class="h-1 w-1/2 bg-blue-400 rounded"></div>
+          </div>
+          <div class="flex gap-1">
+            <div class="flex-1 h-4 bg-amber-100 dark:bg-amber-900/40 rounded"></div>
+            <div class="flex-1 h-4 bg-slate-100 dark:bg-slate-800 rounded"></div>
+          </div>
+          <div class="grid grid-cols-7 gap-0.5">
+            <div class="aspect-square bg-slate-100 dark:bg-slate-800 rounded-sm"></div>
+            <div class="aspect-square bg-slate-100 dark:bg-slate-800 rounded-sm"></div>
+            <div class="aspect-square bg-blue-200 dark:bg-blue-800 rounded-sm"></div>
+            <div class="aspect-square bg-slate-100 dark:bg-slate-800 rounded-sm"></div>
+            <div class="aspect-square bg-slate-100 dark:bg-slate-800 rounded-sm"></div>
+            <div class="aspect-square bg-slate-100 dark:bg-slate-800 rounded-sm"></div>
+            <div class="aspect-square bg-slate-100 dark:bg-slate-800 rounded-sm"></div>
+          </div>
+          <div class="h-2 bg-slate-100 dark:bg-slate-800 rounded"></div>
+          <div class="h-2 bg-slate-100 dark:bg-slate-800 rounded"></div>
+        </div>
+      </div>
+      <div class="p-5">
+        <div class="flex items-center gap-2 mb-2">
+          <span class="text-xs font-bold px-2 py-0.5 bg-rose-100 dark:bg-rose-900/40 text-rose-700 dark:text-rose-300 rounded-full">V7</span>
+          <h3 class="font-bold text-lg">모바일 우선</h3>
+        </div>
+        <p class="text-sm text-slate-500 dark:text-slate-400 leading-relaxed mb-3">
+          단일 컬럼 max-w-md 중앙. 오늘할일 → 승인 → 이번주 → 최근산출물 → 드롭존.
+        </p>
+        <p class="text-xs text-slate-400">외출 중 / 짧은 시간 확인</p>
+      </div>
+    </a>
+
+  </section>
+
+  <!-- 사용 가이드 -->
+  <section class="rounded-2xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-[#171A21] p-8 mb-8">
+    <h2 class="text-xl font-bold mb-4 flex items-center gap-2">
+      <span class="material-symbols-outlined text-blue-500">tips_and_updates</span>
+      이 목업의 의미 — 비개발자용 한 단락
+    </h2>
+    <div class="grid md:grid-cols-2 gap-6 text-sm leading-relaxed">
+      <div>
+        <h3 class="font-semibold mb-2 text-slate-700 dark:text-slate-300">왜 3개를 만들었나</h3>
+        <p class="text-slate-600 dark:text-slate-400">
+          앱 만들면 시간이 오래 걸려요. 그래서 일단 HTML 1장으로 "내가 매일 뭘 보고 싶은가"를
+          3가지 화면 구조로 만들어 봤어요. 직접 클릭해 보고 가장 손에 익는 걸 메인으로 굳히고,
+          나머지 2개는 상황별 보조로 두면 됩니다.
+        </p>
+      </div>
+      <div>
+        <h3 class="font-semibold mb-2 text-slate-700 dark:text-slate-300">이 데이터는 진짜?</h3>
+        <p class="text-slate-600 dark:text-slate-400">
+          모두 <code class="bg-slate-200 dark:bg-slate-800 px-1 rounded text-xs">mock_data.js</code> 안의 가짜 데이터예요.
+          진짜로 연결하려면 (a) Apify로 SNS 데이터 가져와서 SOTDA에 점수 매기고
+          (b) 결과를 같은 형식의 JSON으로 떨궈서 이 화면이 읽게 하면 됩니다.
+          그 연결은 다음 단계입니다.
+        </p>
+      </div>
+      <div>
+        <h3 class="font-semibold mb-2 text-slate-700 dark:text-slate-300">파일은 어디로 저장되나</h3>
+        <ul class="text-slate-600 dark:text-slate-400 space-y-1 text-xs">
+          <li>· 리포트 → <code class="bg-slate-200 dark:bg-slate-800 px-1 rounded">outputs/reports/{고객}/{날짜}.html</code></li>
+          <li>· 승인 큐 → <code class="bg-slate-200 dark:bg-slate-800 px-1 rounded">outputs/approval_queue/</code></li>
+          <li>· 학습 자료 (★드롭존) → <code class="bg-slate-200 dark:bg-slate-800 px-1 rounded">references/manual_learning/{날짜}/</code></li>
+          <li>· SNS 원본 → <code class="bg-slate-200 dark:bg-slate-800 px-1 rounded">data/sns_raw/{플랫폼}/</code></li>
+          <li>· 매일 04:00 백업 → <code class="bg-slate-200 dark:bg-slate-800 px-1 rounded">backups/{YYYY-MM-DD}/</code></li>
+        </ul>
+      </div>
+      <div>
+        <h3 class="font-semibold mb-2 text-slate-700 dark:text-slate-300">다음 단계</h3>
+        <ol class="text-slate-600 dark:text-slate-400 space-y-1 text-xs list-decimal pl-5">
+          <li>3개 중 손에 익는 것 1개 고르기</li>
+          <li>고른 것의 색/폰트/배치 미세조정</li>
+          <li>mock_data.js → 진짜 데이터로 교체 (수동 1회 → 자동화)</li>
+          <li>Notion DB / GitHub Pages에 매일 자동 발행</li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="text-center text-xs text-slate-400 py-8">
+    TRUSTA Cockpit Mockup · 사업화에이젼트_260527 · 단일 HTML · 빌드 도구 없음 · file:// 로 열림
+  </footer>
+</main>
+
+<script>
+  function toggleDark() {
+    const html = document.documentElement;
+    html.classList.toggle('dark');
+    localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
+    document.getElementById('theme-icon').textContent = html.classList.contains('dark') ? 'light_mode' : 'dark_mode';
+  }
+  // init
+  (function() {
+    const saved = localStorage.getItem('theme');
+    const prefers = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    if (saved === 'dark' || (!saved && prefers)) {
+      document.documentElement.classList.add('dark');
+      document.getElementById('theme-icon').textContent = 'light_mode';
+    }
+  })();
+  document.addEventListener('keydown', e => { if (e.key === 'd' || e.key === 'D') toggleDark(); });
+</script>
+</body>
+</html>

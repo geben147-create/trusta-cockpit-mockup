@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="ko" class="">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>V2 코크핏 3단 · TRUSTA Cockpit</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>tailwind.config = { darkMode: 'class' }</script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+<link href="https://fonts.googleapis.com/icon?family=Material+Symbols+Outlined" rel="stylesheet">
+<style>
+  body { font-family: 'Pretendard', 'Inter', system-ui, sans-serif; }
+  .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'opsz' 20; }
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-thumb { background: rgba(100,116,139,0.3); border-radius: 3px; }
+  .tab-active { background: rgba(37, 99, 235, 0.08); color: #2563EB; border-color: #2563EB; }
+  .dark .tab-active { background: rgba(129, 140, 248, 0.12); color: #818CF8; border-color: #818CF8; }
+  .flow-node { transition: transform 150ms; }
+  .flow-node:hover { transform: translateY(-2px); }
+  .flow-arrow {
+    position: relative; height: 2px; flex: 1; background: currentColor; opacity: 0.3;
+  }
+  .flow-arrow::after {
+    content: ''; position: absolute; right: -1px; top: -4px;
+    border-left: 8px solid currentColor; border-top: 5px solid transparent; border-bottom: 5px solid transparent;
+  }
+  .dropzone { border: 2px dashed; transition: background 120ms; }
+  .dropzone.hover { background: rgba(37, 99, 235, 0.08); }
+</style>
+</head>
+<body class="bg-white dark:bg-[#0F1115] text-slate-900 dark:text-slate-100 transition-colors h-screen overflow-hidden flex flex-col">
+
+<!-- Header -->
+<header class="border-b border-slate-200 dark:border-slate-800 bg-white dark:bg-[#171A21] flex-shrink-0">
+  <div class="h-14 flex items-center justify-between px-6">
+    <div class="flex items-center gap-3">
+      <a href="index.html" class="flex items-center gap-2 text-sm text-slate-500 hover:text-blue-500">
+        <span class="material-symbols-outlined text-base">arrow_back</span> Hub
+      </a>
+      <span class="text-slate-300 dark:text-slate-600">|</span>
+      <span class="text-xs font-bold px-2 py-0.5 bg-indigo-100 dark:bg-indigo-900/40 text-indigo-700 dark:text-indigo-300 rounded-full">V2</span>
+      <h1 class="font-bold">코크핏 3단</h1>
+    </div>
+    <div class="flex items-center gap-3">
+      <span class="text-sm text-slate-500">2026-05-27 (수)</span>
+      <button onclick="toggleDark()" class="w-9 h-9 rounded-lg border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center justify-center">
+        <span class="material-symbols-outlined" id="theme-icon">dark_mode</span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- 3-pane layout -->
+<div class="flex flex-1 min-h-0">
+
+  <!-- Left sidebar -->
+  <aside class="w-60 border-r border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-[#171A21] p-4 overflow-y-auto flex-shrink-0">
+
+    <div class="mb-5">
+      <h3 class="text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-2">에이전트</h3>
+      <ul id="left-agents" class="space-y-0.5"></ul>
+    </div>
+
+    <div class="mb-5">
+      <h3 class="text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-2">스킬</h3>
+      <ul id="left-skills" class="space-y-0.5"></ul>
+    </div>
+
+    <div class="mb-5">
+      <h3 class="text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-2">훅</h3>
+      <ul id="left-hooks" class="space-y-0.5"></ul>
+    </div>
+
+    <div class="pt-3 border-t border-slate-200 dark:border-slate-800">
+      <button class="w-full px-3 py-2 text-sm font-semibold rounded-lg bg-blue-500 hover:bg-blue-600 text-white flex items-center justify-center gap-1">
+        <span class="material-symbols-outlined text-base">add</span> 새 작업
+      </button>
+    </div>
+
+  </aside>
+
+  <!-- Center -->
+  <main class="flex-1 overflow-y-auto min-w-0">
+
+    <!-- KPI row -->
+    <div class="p-4 pb-2">
+      <div class="grid grid-cols-4 gap-3">
+        <div class="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-[#171A21] p-3">
+          <div class="text-[10px] text-slate-400 uppercase tracking-wider mb-0.5">백업</div>
+          <div class="font-bold text-emerald-500 flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-emerald-500"></span>OK 04:00</div>
+        </div>
+        <div class="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-[#171A21] p-3">
+          <div class="text-[10px] text-slate-400 uppercase tracking-wider mb-0.5">승인 대기</div>
+          <div class="font-bold text-amber-500">3건</div>
+        </div>
+        <div class="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-[#171A21] p-3">
+          <div class="text-[10px] text-slate-400 uppercase tracking-wider mb-0.5">위험표현</div>
+          <div class="font-bold text-rose-500">2건</div>
+        </div>
+        <div class="rounded-xl border border-slate-200 dark:border-slate-800 bg-blue-500 dark:bg-indigo-500 text-white p-3">
+          <div class="text-[10px] uppercase tracking-wider mb-0.5 opacity-80">이달 발행</div>
+          <div class="font-bold">47건</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tabs -->
+    <div class="px-4 border-b border-slate-200 dark:border-slate-800">
+      <nav class="flex gap-1">
+        <button onclick="showTab('cal')" id="tab-cal" class="px-4 py-2.5 text-sm font-semibold border-b-2 border-transparent hover:text-blue-500 tab-active">캘린더</button>
+        <button onclick="showTab('flow')" id="tab-flow" class="px-4 py-2.5 text-sm font-semibold border-b-2 border-transparent hover:text-blue-500">워크플로</button>
+        <button onclick="showTab('queue')" id="tab-queue" class="px-4 py-2.5 text-sm font-semibold border-b-2 border-transparent hover:text-blue-500">큐</button>
+        <button onclick="showTab('reports')" id="tab-reports" class="px-4 py-2.5 text-sm font-semibold border-b-2 border-transparent hover:text-blue-500">리포트</button>
+        <button onclick="showTab('refs')" id="tab-refs" class="px-4 py-2.5 text-sm font-semibold border-b-2 border-transparent hover:text-blue-500">레퍼런스</button>
+      </nav>
+    </div>
+
+    <!-- Tab content -->
+    <div class="p-4">
+
+      <!-- Calendar mini -->
+      <div id="pane-cal">
+        <div class="flex items-center justify-between mb-3">
+          <h2 class="font-bold">2026년 5월</h2>
+          <div class="flex items-center gap-2 text-xs">
+            <span class="flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-pink-500"></span>IG</span>
+            <span class="flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-slate-800 dark:bg-white"></span>TH</span>
+            <span class="flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-red-500"></span>YT</span>
+            <span class="flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-blue-500"></span>Blog</span>
+          </div>
+        </div>
+        <div class="grid grid-cols-7 gap-1 mb-1">
+          <div class="text-center text-[10px] font-bold text-rose-500">일</div>
+          <div class="text-center text-[10px] font-bold text-slate-400">월</div>
+          <div class="text-center text-[10px] font-bold text-slate-400">화</div>
+          <div class="text-center text-[10px] font-bold text-slate-400">수</div>
+          <div class="text-center text-[10px] font-bold text-slate-400">목</div>
+          <div class="text-center text-[10px] font-bold text-slate-400">금</div>
+          <div class="text-center text-[10px] font-bold text-blue-500">토</div>
+        </div>
+        <div id="cal-mini" class="grid grid-cols-7 gap-1"></div>
+      </div>
+
+      <!-- Workflow -->
+      <div id="pane-flow" class="hidden">
+        <h2 class="font-bold mb-1">에이전트 사용 순서 — 화장품 브랜드 1건 처리 흐름</h2>
+        <p class="text-sm text-slate-500 mb-5">아래 7단계가 매 고객사마다 반복됩니다. 사람 승인 단계(6)만 수동, 나머지는 자동입니다.</p>
+
+        <div class="space-y-3" id="flow-steps"></div>
+
+        <div class="mt-6 p-4 rounded-xl bg-blue-50 dark:bg-blue-950/30 border border-blue-200 dark:border-blue-900">
+          <h3 class="font-semibold mb-2 text-blue-900 dark:text-blue-200">한 줄 요약</h3>
+          <p class="text-sm text-blue-800 dark:text-blue-300">
+            리드 추가 → 광고법 검증 → 현지 톤 변환 → 콘텐츠 점수화 → HTML 리포트 → 사람 승인 → 발행.
+            총 자동화 시간: 약 <strong>10~20분</strong> + 승인 시간 (사용자 결정).
+          </p>
+        </div>
+      </div>
+
+      <!-- Queue -->
+      <div id="pane-queue" class="hidden">
+        <h2 class="font-bold mb-3">승인 대기 큐</h2>
+        <div id="queue-list" class="space-y-3"></div>
+      </div>
+
+      <!-- Reports -->
+      <div id="pane-reports" class="hidden">
+        <h2 class="font-bold mb-3">최근 리포트</h2>
+        <div class="grid md:grid-cols-2 gap-3">
+          <div class="rounded-xl border border-slate-200 dark:border-slate-800 p-4 hover:shadow-md transition-shadow cursor-pointer">
+            <div class="flex items-center justify-between mb-2">
+              <span class="text-xs font-bold px-2 py-0.5 bg-emerald-100 dark:bg-emerald-900/40 text-emerald-700 dark:text-emerald-300 rounded-full">완료</span>
+              <span class="text-xs text-slate-400">2026-05-26</span>
+            </div>
+            <h3 class="font-semibold mb-1">A 브랜드 — 선크림 광고문구 진단</h3>
+            <p class="text-xs text-slate-500 mb-2">위험표현 4건 발견 / 수정 카피 4건 제공 / SOTDA 점수 평균 71</p>
+            <p class="text-xs text-slate-400">outputs/reports/a_brand/2026-05-26.html</p>
+          </div>
+          <div class="rounded-xl border border-slate-200 dark:border-slate-800 p-4 hover:shadow-md transition-shadow cursor-pointer">
+            <div class="flex items-center justify-between mb-2">
+              <span class="text-xs font-bold px-2 py-0.5 bg-amber-100 dark:bg-amber-900/40 text-amber-700 dark:text-amber-300 rounded-full">검토 중</span>
+              <span class="text-xs text-slate-400">2026-05-27</span>
+            </div>
+            <h3 class="font-semibold mb-1">B 브랜드 — 미국 진출 IG 카피</h3>
+            <p class="text-xs text-slate-500 mb-2">현지화 톤 변환 12건 / FTC 1차 검증 완료 / 사람 검수 대기</p>
+            <p class="text-xs text-slate-400">outputs/reports/b_brand/2026-05-27.html</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- References -->
+      <div id="pane-refs" class="hidden">
+        <h2 class="font-bold mb-3">레퍼런스 학습</h2>
+        <div class="dropzone rounded-xl border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/30 p-8 text-center mb-4"
+             ondragover="event.preventDefault(); this.classList.add('hover')"
+             ondragleave="this.classList.remove('hover')"
+             ondrop="event.preventDefault(); this.classList.remove('hover'); alert('mock: references/manual_learning/2026-05-27/ 에 저장됨')">
+          <span class="material-symbols-outlined text-4xl text-slate-400">cloud_upload</span>
+          <p class="font-semibold mt-2">파일/URL 드롭존</p>
+          <p class="text-xs text-slate-500 mt-1">벤치마크 IG 캡처, 경쟁사 상세페이지, FDA 가이드 PDF 등을 끌어다 놓으세요</p>
+          <p class="text-xs text-slate-400 mt-3">→ <code class="bg-slate-200 dark:bg-slate-800 px-1 rounded">references/manual_learning/2026-05-27/</code> 에 자동 저장 (mock)</p>
+        </div>
+        <h3 class="text-sm font-bold mb-2">이미 학습된 자료</h3>
+        <ul id="refs-list" class="space-y-2"></ul>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Right rail -->
+  <aside class="w-80 border-l border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-[#171A21] p-4 overflow-y-auto flex-shrink-0">
+
+    <h3 class="text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-2">⚠ 사람 승인 대기 (3)</h3>
+    <div id="right-approvals" class="space-y-2 mb-5"></div>
+
+    <h3 class="text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-2">📦 백업</h3>
+    <div class="rounded-lg border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-3 mb-5">
+      <div class="flex items-center justify-between mb-1">
+        <span class="text-sm font-semibold flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-emerald-500"></span>성공</span>
+        <span class="text-xs text-slate-400">04:00</span>
+      </div>
+      <p class="text-xs text-slate-500">12.3 MB</p>
+      <p class="text-[10px] text-slate-400 mt-1">backups/2026-05-27/</p>
+    </div>
+
+    <h3 class="text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-2">🕐 최근 활동</h3>
+    <ul id="right-activity" class="space-y-1.5"></ul>
+
+  </aside>
+
+</div>
+
+<script src="mock_data.js"></script>
+<script>
+function toggleDark() {
+  document.documentElement.classList.toggle('dark');
+  localStorage.setItem('theme', document.documentElement.classList.contains('dark') ? 'dark' : 'light');
+  document.getElementById('theme-icon').textContent = document.documentElement.classList.contains('dark') ? 'light_mode' : 'dark_mode';
+}
+(function() {
+  const saved = localStorage.getItem('theme');
+  const prefers = window.matchMedia('(prefers-color-scheme: dark)').matches;
+  if (saved === 'dark' || (!saved && prefers)) {
+    document.documentElement.classList.add('dark');
+    document.getElementById('theme-icon').textContent = 'light_mode';
+  }
+})();
+
+// Left sidebar
+function renderLeft() {
+  const agentsUl = document.getElementById('left-agents');
+  agentsUl.innerHTML = MOCK.agents.map(a => `
+    <li class="flex items-center gap-2 px-2 py-1.5 rounded text-sm hover:bg-slate-200 dark:hover:bg-slate-800 cursor-pointer ${a.status === 'running' ? 'text-blue-600 dark:text-indigo-300 font-semibold' : ''}">
+      ${a.fav ? '<span class="text-yellow-400 text-xs">★</span>' : '<span class="w-2"></span>'}
+      <span class="material-symbols-outlined text-base">${a.status === 'running' ? 'progress_activity' : 'smart_toy'}</span>
+      <span class="truncate flex-1">${a.name}</span>
+      ${a.status === 'running' ? '<span class="w-1.5 h-1.5 rounded-full bg-blue-500 animate-pulse"></span>' : ''}
+    </li>
+  `).join('');
+  document.getElementById('left-skills').innerHTML = MOCK.skills.map(s => `
+    <li class="flex items-center gap-2 px-2 py-1.5 rounded text-sm hover:bg-slate-200 dark:hover:bg-slate-800 cursor-pointer">
+      ${s.fav ? '<span class="text-yellow-400 text-xs">★</span>' : '<span class="w-2"></span>'}
+      <span class="material-symbols-outlined text-base">extension</span>
+      <span class="truncate flex-1">${s.name}</span>
+    </li>
+  `).join('');
+  document.getElementById('left-hooks').innerHTML = MOCK.hooks.map(h => `
+    <li class="flex items-center gap-2 px-2 py-1.5 rounded text-sm hover:bg-slate-200 dark:hover:bg-slate-800 cursor-pointer">
+      <span class="w-2 h-2 rounded-full ${h.enabled ? 'bg-emerald-500' : 'bg-slate-300'}"></span>
+      <span class="material-symbols-outlined text-base">webhook</span>
+      <span class="truncate flex-1">${h.name}</span>
+    </li>
+  `).join('');
+}
+
+// Cal mini
+function platformDot(p) {
+  const map = { instagram:'bg-pink-500', threads:'bg-slate-800 dark:bg-white', youtube:'bg-red-500', tiktok:'bg-cyan-500', blog:'bg-blue-500' };
+  return map[p] || 'bg-slate-400';
+}
+function renderCalMini() {
+  const grid = document.getElementById('cal-mini');
+  grid.innerHTML = '';
+  const firstDow = 5;
+  for (let i = 0; i < firstDow; i++) {
+    grid.insertAdjacentHTML('beforeend', '<div class="aspect-square rounded bg-slate-50 dark:bg-[#0F1115]"></div>');
+  }
+  for (let d = 1; d <= 31; d++) {
+    const ds = `2026-05-${String(d).padStart(2,'0')}`;
+    const items = MOCK.calendar[ds] || [];
+    const isToday = ds === MOCK.today;
+    const hasRisk = items.some(i => i.risk === 'high');
+    const hasPending = items.some(i => i.s === 'approval_pending');
+    const border = hasRisk ? 'border-rose-400' : hasPending ? 'border-amber-400' : 'border-slate-200 dark:border-slate-800';
+    const bg = isToday ? 'bg-blue-500 text-white' : 'bg-white dark:bg-slate-900';
+    const dots = items.slice(0,4).map(i => `<span class="w-1 h-1 rounded-full ${platformDot(i.p)}"></span>`).join('');
+    grid.insertAdjacentHTML('beforeend', `
+      <div class="aspect-square rounded border ${border} ${bg} p-1 flex flex-col items-center justify-between cursor-pointer hover:shadow text-xs">
+        <span class="${isToday ? 'font-bold' : ''}">${d}</span>
+        <div class="flex gap-0.5">${dots}</div>
+      </div>
+    `);
+  }
+}
+
+// Workflow
+function renderFlow() {
+  const container = document.getElementById('flow-steps');
+  container.innerHTML = MOCK.workflow.map((w, idx) => `
+    <div class="flow-node rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-[#171A21] p-4 hover:shadow-md">
+      <div class="flex items-start gap-4">
+        <div class="w-10 h-10 rounded-full ${idx === 5 ? 'bg-amber-100 dark:bg-amber-900/40 text-amber-700 dark:text-amber-300' : 'bg-blue-100 dark:bg-blue-900/40 text-blue-700 dark:text-blue-300'} flex items-center justify-center font-bold flex-shrink-0">${w.step}</div>
+        <div class="flex-1 min-w-0">
+          <div class="flex items-center justify-between mb-1">
+            <h3 class="font-semibold">${w.title}</h3>
+            <span class="text-xs text-slate-400">⏱ ${w.time}</span>
+          </div>
+          <p class="text-xs text-slate-500 mb-2">사용: <code class="bg-slate-100 dark:bg-slate-800 px-1.5 py-0.5 rounded">${w.agent}</code></p>
+          <div class="grid md:grid-cols-2 gap-2 text-xs">
+            <div class="flex items-center gap-1.5">
+              <span class="material-symbols-outlined text-sm text-slate-400">input</span>
+              <span class="text-slate-500">입력:</span>
+              <code class="text-slate-700 dark:text-slate-300 truncate">${w.input}</code>
+            </div>
+            <div class="flex items-center gap-1.5">
+              <span class="material-symbols-outlined text-sm text-slate-400">output</span>
+              <span class="text-slate-500">출력:</span>
+              <code class="text-slate-700 dark:text-slate-300 truncate">${w.output}</code>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+// Queue
+function renderQueue() {
+  const list = document.getElementById('queue-list');
+  const riskColor = { high:'rose', medium:'amber', low:'slate' };
+  list.innerHTML = MOCK.approvalQueue.map(q => {
+    const c = riskColor[q.risk];
+    return `
+    <div class="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-[#171A21] p-4">
+      <div class="flex items-center justify-between mb-2">
+        <span class="text-xs font-bold px-2 py-0.5 bg-${c}-100 dark:bg-${c}-900/40 text-${c}-700 dark:text-${c}-300 rounded-full">${q.risk.toUpperCase()}</span>
+        <span class="text-xs text-slate-400">${q.id}</span>
+      </div>
+      <h3 class="font-semibold mb-1">${q.title}</h3>
+      <p class="text-sm text-slate-500 mb-2">${q.preview}</p>
+      <p class="text-xs text-slate-400 mb-3">📝 ${q.reason}</p>
+      <div class="flex gap-2">
+        <button class="px-3 py-1.5 text-xs font-semibold rounded bg-emerald-500 hover:bg-emerald-600 text-white">승인</button>
+        <button class="px-3 py-1.5 text-xs font-semibold rounded bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700">수정</button>
+        <button class="px-3 py-1.5 text-xs font-semibold rounded bg-rose-100 dark:bg-rose-900/40 text-rose-700 dark:text-rose-300 hover:bg-rose-200">거절</button>
+      </div>
+    </div>
+  `;}).join('');
+}
+
+// Refs
+function renderRefs() {
+  document.getElementById('refs-list').innerHTML = MOCK.references.map(r => `
+    <li class="flex items-center gap-3 px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-800">
+      <span class="material-symbols-outlined ${r.status === 'learned' ? 'text-emerald-500' : 'text-amber-500'}">${r.status === 'learned' ? 'check_circle' : 'pending'}</span>
+      <div class="flex-1 min-w-0">
+        <div class="text-sm font-medium truncate">${r.title}</div>
+        <div class="text-xs text-slate-400 truncate">${r.source} · ${r.added}</div>
+      </div>
+      <span class="text-xs text-slate-400">${r.status === 'learned' ? '학습됨' : '대기'}</span>
+    </li>
+  `).join('');
+}
+
+// Right rail
+function renderRight() {
+  document.getElementById('right-approvals').innerHTML = MOCK.approvalQueue.slice(0,3).map(q => {
+    const c = { high:'rose', medium:'amber', low:'slate' }[q.risk];
+    return `
+    <div class="rounded-lg border border-${c}-200 dark:border-${c}-900 bg-white dark:bg-slate-900 p-3 cursor-pointer hover:shadow">
+      <div class="flex items-center justify-between mb-1">
+        <span class="text-[10px] font-bold text-${c}-600 dark:text-${c}-400">${q.risk.toUpperCase()}</span>
+      </div>
+      <p class="text-xs font-semibold truncate">${q.title}</p>
+    </div>
+  `;}).join('');
+  document.getElementById('right-activity').innerHTML = MOCK.recentActivity.map(a => `
+    <li class="flex items-start gap-2 text-xs">
+      <span class="material-symbols-outlined text-sm ${a.warn ? 'text-rose-500' : 'text-slate-400'} flex-shrink-0">${a.icon}</span>
+      <div class="flex-1 min-w-0">
+        <div class="text-slate-400 text-[10px]">${a.time}</div>
+        <div class="${a.warn ? 'text-rose-600 dark:text-rose-400 font-medium' : 'text-slate-700 dark:text-slate-300'}">${a.text}</div>
+      </div>
+    </li>
+  `).join('');
+}
+
+function showTab(name) {
+  ['cal','flow','queue','reports','refs'].forEach(n => {
+    document.getElementById('pane-'+n).classList.toggle('hidden', n !== name);
+    document.getElementById('tab-'+n).classList.toggle('tab-active', n === name);
+  });
+}
+
+renderLeft();
+renderCalMini();
+renderFlow();
+renderQueue();
+renderRefs();
+renderRight();
+
+document.addEventListener('keydown', e => { if (e.key === 'd' || e.key === 'D') toggleDark(); });
+</script>
+</body>
+</html>

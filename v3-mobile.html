@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="ko" class="">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>V7 모바일 우선 · TRUSTA Cockpit</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>tailwind.config = { darkMode: 'class' }</script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+<link href="https://fonts.googleapis.com/icon?family=Material+Symbols+Outlined" rel="stylesheet">
+<style>
+  body { font-family: 'Pretendard', 'Inter', system-ui, sans-serif; }
+  .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'opsz' 20; }
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-thumb { background: rgba(100,116,139,0.3); border-radius: 3px; }
+  .h-scroll { overflow-x: auto; scroll-snap-type: x mandatory; }
+  .h-scroll > * { scroll-snap-align: start; }
+  .dropzone { border: 2px dashed; transition: background 120ms; }
+  .dropzone.hover { background: rgba(37, 99, 235, 0.08); }
+</style>
+</head>
+<body class="bg-white dark:bg-[#0F1115] text-slate-900 dark:text-slate-100 transition-colors min-h-screen">
+
+<!-- Top sticky -->
+<header class="border-b border-slate-200 dark:border-slate-800 bg-white dark:bg-[#171A21] sticky top-0 z-50">
+  <div class="max-w-md mx-auto h-14 flex items-center justify-between px-4">
+    <a href="index.html" class="flex items-center gap-1 text-sm text-slate-500 hover:text-blue-500">
+      <span class="material-symbols-outlined text-base">arrow_back</span>
+    </a>
+    <div class="flex items-center gap-2">
+      <span class="w-2 h-2 rounded-full bg-emerald-500" title="백업 OK"></span>
+      <span class="text-sm font-semibold">2026-05-27</span>
+    </div>
+    <button onclick="toggleDark()" class="w-9 h-9 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center justify-center">
+      <span class="material-symbols-outlined" id="theme-icon">dark_mode</span>
+    </button>
+  </div>
+</header>
+
+<main class="max-w-md mx-auto px-4 py-4 space-y-5">
+
+  <!-- 0. 변형 라벨 -->
+  <div class="flex items-center justify-between">
+    <span class="text-xs font-bold px-2 py-0.5 bg-rose-100 dark:bg-rose-900/40 text-rose-700 dark:text-rose-300 rounded-full">V7 · 모바일 우선</span>
+    <span class="text-xs text-slate-400">Owner</span>
+  </div>
+
+  <!-- 1. 오늘 결정할 일 (가장 큰 카드) -->
+  <section class="rounded-2xl bg-gradient-to-br from-blue-500 to-indigo-600 dark:from-indigo-500 dark:to-indigo-700 text-white p-5 shadow-lg">
+    <div class="flex items-center justify-between mb-2">
+      <span class="text-xs opacity-80 uppercase tracking-wider">오늘 결정할 일</span>
+      <span class="text-xs bg-white/20 px-2 py-0.5 rounded-full">1순위</span>
+    </div>
+    <h2 class="text-xl font-bold leading-tight mb-2">선크림 미국식 톤 변환 승인</h2>
+    <p class="text-sm opacity-90 mb-4">Instagram · ⚠ 위험표현 'SPF strong' 1건 — FTC 효능 단정 가이드 위반 가능. 'My ride-or-die SPF'로 변환 권장.</p>
+    <div class="flex gap-2">
+      <button class="flex-1 px-4 py-2.5 text-sm font-semibold rounded-lg bg-white text-blue-600 hover:bg-blue-50">검토하기</button>
+      <button class="px-4 py-2.5 text-sm font-semibold rounded-lg bg-white/20 hover:bg-white/30">나중에</button>
+    </div>
+  </section>
+
+  <!-- 2. 승인 대기 (가로 스와이프) -->
+  <section>
+    <div class="flex items-center justify-between mb-2">
+      <h3 class="text-sm font-bold flex items-center gap-1.5">
+        <span class="material-symbols-outlined text-amber-500 text-base">pending_actions</span>
+        승인 대기 (3)
+      </h3>
+      <a class="text-xs text-blue-500 hover:underline">전체 보기</a>
+    </div>
+    <div class="h-scroll flex gap-3 pb-2 -mx-4 px-4" id="approvals"></div>
+  </section>
+
+  <!-- 3. 이번주 캘린더 (7일 가로) -->
+  <section>
+    <div class="flex items-center justify-between mb-2">
+      <h3 class="text-sm font-bold flex items-center gap-1.5">
+        <span class="material-symbols-outlined text-blue-500 text-base">calendar_month</span>
+        이번주
+      </h3>
+      <a class="text-xs text-blue-500 hover:underline">월간 보기</a>
+    </div>
+    <div class="grid grid-cols-7 gap-1.5" id="week-cal"></div>
+  </section>
+
+  <!-- 4. KPI 한 줄 -->
+  <section class="grid grid-cols-3 gap-2">
+    <div class="rounded-xl border border-slate-200 dark:border-slate-800 p-3 text-center">
+      <div class="text-[10px] text-slate-400 uppercase tracking-wider">위험</div>
+      <div class="font-bold text-rose-500 text-lg">2</div>
+    </div>
+    <div class="rounded-xl border border-slate-200 dark:border-slate-800 p-3 text-center">
+      <div class="text-[10px] text-slate-400 uppercase tracking-wider">초안</div>
+      <div class="font-bold text-lg">12</div>
+    </div>
+    <div class="rounded-xl border border-slate-200 dark:border-slate-800 p-3 text-center">
+      <div class="text-[10px] text-slate-400 uppercase tracking-wider">이달</div>
+      <div class="font-bold text-blue-500 text-lg">47</div>
+    </div>
+  </section>
+
+  <!-- 5. 최근 산출물 -->
+  <section>
+    <div class="flex items-center justify-between mb-2">
+      <h3 class="text-sm font-bold flex items-center gap-1.5">
+        <span class="material-symbols-outlined text-emerald-500 text-base">description</span>
+        최근 산출물
+      </h3>
+    </div>
+    <div class="space-y-2" id="recent-out"></div>
+  </section>
+
+  <!-- 6. 워크플로 요약 -->
+  <section>
+    <h3 class="text-sm font-bold mb-2 flex items-center gap-1.5">
+      <span class="material-symbols-outlined text-indigo-500 text-base">route</span>
+      에이전트 사용 순서
+    </h3>
+    <ol class="rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-[#171A21] p-4 space-y-2 text-sm" id="flow-mini"></ol>
+  </section>
+
+  <!-- 7. 학습 드롭존 (큰 점선 박스) -->
+  <section>
+    <h3 class="text-sm font-bold mb-2 flex items-center gap-1.5">
+      <span class="material-symbols-outlined text-pink-500 text-base">cloud_upload</span>
+      벤치마크/레퍼런스 추가
+    </h3>
+    <div class="dropzone rounded-xl border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/30 p-6 text-center"
+         ondragover="event.preventDefault(); this.classList.add('hover')"
+         ondragleave="this.classList.remove('hover')"
+         ondrop="event.preventDefault(); this.classList.remove('hover'); alert('mock: references/manual_learning/2026-05-27/ 에 저장됨')">
+      <span class="material-symbols-outlined text-3xl text-slate-400">add_photo_alternate</span>
+      <p class="font-semibold mt-2 text-sm">파일 또는 URL 드롭</p>
+      <p class="text-xs text-slate-500 mt-1">→ references/manual_learning/2026-05-27/</p>
+    </div>
+  </section>
+
+  <!-- 8. 백업 상태 -->
+  <section>
+    <div class="rounded-xl border border-emerald-200 dark:border-emerald-900 bg-emerald-50 dark:bg-emerald-950/30 p-4 flex items-center gap-3">
+      <span class="material-symbols-outlined text-emerald-500 text-2xl">cloud_done</span>
+      <div class="flex-1">
+        <div class="text-sm font-semibold text-emerald-700 dark:text-emerald-300">백업 완료</div>
+        <div class="text-xs text-emerald-600 dark:text-emerald-400 opacity-80">04:00 · 12.3 MB · backups/2026-05-27/</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="text-center text-xs text-slate-400 pt-4 pb-8">
+    V7 모바일 우선 · 한 화면 한 작업 · 외출 중 빠른 확인용
+  </footer>
+
+</main>
+
+<script src="mock_data.js"></script>
+<script>
+function toggleDark() {
+  document.documentElement.classList.toggle('dark');
+  localStorage.setItem('theme', document.documentElement.classList.contains('dark') ? 'dark' : 'light');
+  document.getElementById('theme-icon').textContent = document.documentElement.classList.contains('dark') ? 'light_mode' : 'dark_mode';
+}
+(function() {
+  const saved = localStorage.getItem('theme');
+  const prefers = window.matchMedia('(prefers-color-scheme: dark)').matches;
+  if (saved === 'dark' || (!saved && prefers)) {
+    document.documentElement.classList.add('dark');
+    document.getElementById('theme-icon').textContent = 'light_mode';
+  }
+})();
+
+function platformDot(p) {
+  return { instagram:'bg-pink-500', threads:'bg-slate-800 dark:bg-white', youtube:'bg-red-500', tiktok:'bg-cyan-500', blog:'bg-blue-500' }[p] || 'bg-slate-400';
+}
+
+// Approvals (horizontal swipe cards)
+const aHTML = MOCK.approvalQueue.map(q => {
+  const c = { high:'rose', medium:'amber', low:'slate' }[q.risk];
+  return `
+  <div class="flex-shrink-0 w-64 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-[#171A21] p-4">
+    <div class="flex items-center justify-between mb-2">
+      <span class="text-[10px] font-bold px-2 py-0.5 bg-${c}-100 dark:bg-${c}-900/40 text-${c}-700 dark:text-${c}-300 rounded-full">${q.risk.toUpperCase()}</span>
+      <span class="text-[10px] text-slate-400">${q.id}</span>
+    </div>
+    <h4 class="text-sm font-semibold mb-1.5 leading-tight">${q.title}</h4>
+    <p class="text-xs text-slate-500 mb-3 line-clamp-2">${q.preview}</p>
+    <div class="flex gap-1.5">
+      <button class="flex-1 px-2 py-1.5 text-xs font-semibold rounded bg-emerald-500 text-white">승인</button>
+      <button class="px-2 py-1.5 text-xs rounded bg-slate-100 dark:bg-slate-800">수정</button>
+    </div>
+  </div>
+`;}).join('');
+document.getElementById('approvals').innerHTML = aHTML;
+
+// Week calendar (last 7 days including today)
+const dayLabel = ['일','월','화','수','목','금','토'];
+const weekHTML = [];
+for (let d = 24; d <= 30; d++) {
+  const ds = `2026-05-${String(d).padStart(2,'0')}`;
+  const items = MOCK.calendar[ds] || [];
+  const isToday = ds === MOCK.today;
+  const dow = (d + 4) % 7; // 5월 1일이 금요일이므로 5월24일=일요일(0)
+  const dots = items.slice(0,3).map(i => `<span class="w-1 h-1 rounded-full ${platformDot(i.p)}"></span>`).join('');
+  const bg = isToday ? 'bg-blue-500 text-white' : 'bg-white dark:bg-[#171A21]';
+  const dowColor = dow === 0 ? 'text-rose-400' : dow === 6 ? 'text-blue-400' : 'text-slate-400';
+  weekHTML.push(`
+    <div class="rounded-lg border border-slate-200 dark:border-slate-800 ${bg} p-2 text-center cursor-pointer">
+      <div class="text-[10px] ${isToday ? 'opacity-90' : dowColor}">${dayLabel[dow]}</div>
+      <div class="text-sm font-bold">${d}</div>
+      <div class="flex justify-center gap-0.5 mt-1 min-h-[4px]">${dots}</div>
+    </div>
+  `);
+}
+document.getElementById('week-cal').innerHTML = weekHTML.join('');
+
+// Recent output cards
+const recentItems = [
+  { date: '2026-05-26', title: 'A 브랜드 — 선크림 광고문구 진단', tag: 'reports', risk: 4 },
+  { date: '2026-05-26', title: '미국 K-Beauty Threads 12건 점수화', tag: 'scoring', score: '평균 78' },
+  { date: '2026-05-25', title: 'Glow Recipe IG 후킹 분석', tag: 'reference', status: '학습 완료' }
+];
+document.getElementById('recent-out').innerHTML = recentItems.map(r => `
+  <div class="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-[#171A21] p-3 flex items-center gap-3 hover:shadow-sm cursor-pointer">
+    <span class="material-symbols-outlined text-blue-500">${r.tag === 'reports' ? 'description' : r.tag === 'scoring' ? 'analytics' : 'bookmark'}</span>
+    <div class="flex-1 min-w-0">
+      <p class="text-sm font-medium truncate">${r.title}</p>
+      <p class="text-xs text-slate-400">${r.date} · ${r.risk ? `위험 ${r.risk}건` : r.score || r.status}</p>
+    </div>
+    <span class="material-symbols-outlined text-slate-400">chevron_right</span>
+  </div>
+`).join('');
+
+// Flow mini
+document.getElementById('flow-mini').innerHTML = MOCK.workflow.map((w, idx) => `
+  <li class="flex items-center gap-3 ${idx === 5 ? 'text-amber-700 dark:text-amber-400 font-semibold' : ''}">
+    <span class="w-6 h-6 rounded-full ${idx === 5 ? 'bg-amber-100 dark:bg-amber-900/40' : 'bg-blue-100 dark:bg-blue-900/40 text-blue-700 dark:text-blue-300'} flex items-center justify-center text-xs font-bold flex-shrink-0">${w.step}</span>
+    <span class="flex-1 text-sm">${w.title}</span>
+    <span class="text-xs text-slate-400 flex-shrink-0">${w.time}</span>
+  </li>
+`).join('');
+
+document.addEventListener('keydown', e => { if (e.key === 'd' || e.key === 'D') toggleDark(); });
+</script>
+</body>
+</html>
