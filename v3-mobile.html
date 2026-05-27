@@ -241,6 +241,14 @@ document.getElementById('flow-mini').innerHTML = MOCK.workflow.map((w, idx) => `
 `).join('');
 
 document.addEventListener('keydown', e => { if (e.key === 'd' || e.key === 'D') toggleDark(); });
+// Sync theme with parent window (V2 iframe embedding)
+window.addEventListener('storage', e => {
+  if (e.key === 'theme') {
+    const dark = e.newValue === 'dark';
+    document.documentElement.classList.toggle('dark', dark);
+    document.getElementById('theme-icon').textContent = dark ? 'light_mode' : 'dark_mode';
+  }
+});
 </script>
 </body>
 </html>
